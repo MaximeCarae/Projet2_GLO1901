@@ -19,7 +19,7 @@ class Quoridor:
         
         :param murs: un dictionnaire contenant une clé 'horizontaux' associée à la liste des
         positions (x, y) des murs horizontaux, et une clé 'verticaux' associée à la liste des
-        positions (x, y) des murs verticaux. Par défaut, il n'y a aucun mur placé sur le jeu.
+        positions (x, y) des murs verticaux. Par défaut, il n'y a aucun murs placé sur le jeu.
 
         :raises QuoridorError: si l'argument 'joueurs' n'est pas itérable.
         :raises QuoridorError: si l'itérable de joueurs en contient plus de deux.
@@ -27,51 +27,66 @@ class Quoridor:
         :raises QuoridorError: si la position d'un joueur est invalide.
         :raises QuoridorError: si l'argument 'murs' n'est pas un dictionnaire lorsque présent.
         :raises QuoridorError: si le total des murs placés et plaçables n'est pas égal à 20.
-        :raises QuoridorError: si la position d'un mur est invalide.
+        :raises QuoridorError: si la position d'un murs est invalide.
         """
-
+        # On vérifie si joueur est itérable, si invalide on soulève une erreur
         if not(isinstance(joueurs, list)) :
             raise QuoridorError
-
+        # On vérifie le nombre de joueur, si invalide on soulève une erreur
         if len(joueurs) >= 2:
             raise QuoridorError
-
+        # On différencie si c'est une chaine de charactère ou un dictionnaire
+        # et on initialise les paramètres dans un dictionnaire en fonction
         if isinstance(joueurs[0], str):
-            self.joueur1 = {'nom' : joueurs[0], 'mur' : 10, 'pos' : (5,1)}
-            self.joueur2 = {'nom' : joueurs[1], 'mur' : 10, 'pos' : (5,1)}
+            # Charactère donc nouvelle partie
+            self.joueur1 = {'nom' : joueurs[0], 'murs' : 10, 'pos' : (5,1)}
+            self.joueur2 = {'nom' : joueurs[1], 'murs' : 10, 'pos' : (5,1)}
         elif isinstance(joueurs, dict):
-            self.joueur1 = {'nom' : joueurs[0]['nom'], 'mur' : joueurs[0]['murs'], 'pos' : joueurs[0]['pos']}
-            self.joueur2 = {'nom' : joueurs[1]['nom'], 'mur' : joueurs[1]['murs'], 'pos' : joueurs[1]['pos']}
-
-        if ((self.joueur1['mur'] < 0) or (self.joueur1['mur'] > 10) or (self.joueur2['mur'] < 0) or (self.joueur2['mur'] > 10)):
+            # Dictionnaire donc partie en cours
+            self.joueur1 = {'nom' : joueurs[0]['nom'],
+                            'murs' : joueurs[0]['murs'],
+                            'pos' : joueurs[0]['pos']}
+            self.joueur2 = {'nom' : joueurs[1]['nom'],
+                            'murs' : joueurs[1]['murs'],
+                            'pos' : joueurs[1]['pos']}
+        # Si un joueur à un nombre de murs invalide on soulève une erreur
+        if ((self.joueur1['murs'] < 0) or (self.joueur1['murs'] > 10) or 
+            (self.joueur2['murs'] < 0) or (self.joueur2['murs'] > 10)):
             raise QuoridorError
-
-        if (not(1 <= self.joueur1['pos'][0] <= 9) or not(1 <= self.joueur1['pos'][1] <= 9) or 
-            not(1 <= self.joueur2['pos'][0] <= 9) or not(1 <= self.joueur2['pos'][1] <= 9)):
+        # On vérifie la position des joueurs, si invalide on soulève une erreur
+        if (not(1 <= self.joueur1['pos'][0] <= 9) or 
+            not(1 <= self.joueur1['pos'][1] <= 9) or 
+            not(1 <= self.joueur2['pos'][0] <= 9) or 
+            not(1 <= self.joueur2['pos'][1] <= 9)):
             raise QuoridorError
-
+        # On vérifie le type de murs, si invalide on soulève une erreur
         if ((murs != None) and not(isinstance(murs, dict))):
             raise QuoridorError
-
+        # Si il y a des murs, on enregistre leurs positions
         if murs != None :
             self.verticaux = murs['verticaux']
             self.horizontaux = murs['horizontaux']
-        
-        if len(self.verticaux) + len(self.horizontaux) + self.joueur1['mur'] + self.joueur2['mur'] != 20:
+        # On vérifie le nombre de murs en jeu, si invalide on soulève une erreur
+        if (len(self.verticaux) + len(self.horizontaux) + self.joueur1['murs'] 
+                + self.joueur2['murs'] != 20):
             raise QuoridorError
-
+        # On vérifie la position des murs verticaux, 
+        # si invalide on soulève une erreur
         for self.verticaux in self.verticaux:
-            if (not(2 <= self.verticaux[0] <= 9) or not(1 <= self.verticaux[1] <= 8)):
+            if (not(2 <= self.verticaux[0] <= 9) or
+                not(1 <= self.verticaux[1] <= 8)):
                 raise QuoridorError
-        
+        # On vérifie la position des murs horizontaux, 
+        # si invalide on soulève une erreur
         for self.horizontaux in self.horizontaux:
-            if (not(1 <= self.horizontaux[0] <= 8) or not(2 <= self.horizontaux[1] <= 9)):
+            if (not(1 <= self.horizontaux[0] <= 8) or
+                not(2 <= self.horizontaux[1] <= 9)):
                 raise QuoridorError
 
 
     def __str__(self):
         """
-        Produire la représentation en art ascii correspondant à l'état actuel de la partie. 
+        Produire la représentation en art ascii correspondant à l'état actuel de la partie.
         Cette représentation est la même que celle du TP précédent.
 
         :returns: la chaîne de caractères de la représentation.
@@ -79,7 +94,7 @@ class Quoridor:
         # On commence la chaine sous forme de liste avec la première ligne
         chaine = 3*[' '] + 35*['-'] + [' \n']
         # On remplis toutes les lignes du milieu
-        for i in range(9, 0, -1): # On compte à l'envers pour placer bien les (y)
+        for i in range(9, 0, -1): # On compte à l'envers pour placer bien les y
             chaine += str(i) + ' | ' + 8*'.   ' + '. |'
             if (i != 1):
                 chaine += '\n  |' + 34 * ' ' + ' |\n'
@@ -111,8 +126,8 @@ class Quoridor:
         chaine[37 + (16 - self.joueur2['pos'][1]*2+2)*40 +
                            4*(self.joueur2['pos'][0]-1)+6] = '2'
 
-        # On retourne la chaine de caractère en ajoutant la légende et en faisant 
-        # un join() sur la liste. On sépare en trois fois pour ne pas 
+        # On retourne la chaine de caractère en ajoutant la légende et en
+        # faisant un join() sur la liste. On sépare en trois fois pour ne pas
         # dépasser la colonne 80
         legende = 'Légende: 1=' + str(self.joueur1)
         legende = legende + ', 2=' + str(self.joueur2)
@@ -129,24 +144,46 @@ class Quoridor:
         :raises QuoridorError: si la position est invalide (en dehors du damier).
         :raises QuoridorError: si la position est invalide pour l'état actuel du jeu.
         """
-
+        # On vérifie si le numéro de joueur est valide, sinon on soulève
+        # une erreur
         if (joueur != 1 or joueur != 2):
             raise QuoridorError
-
+        
+        # On vérifie si la position est valide, sinon on soulève une erreur
         if (not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9) or 
             not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9)):
             raise QuoridorError
-
+        
+        # On enregistre l'état de la partie, et on fait un graphe
         état = Quoridor.état_partie(self)
         graphe = construire_graphe(
         [joueur['pos'] for joueur in état['joueurs']], 
         état['murs']['horizontaux'],
         état['murs']['verticaux'])
 
+        # On vérfie le joueur sélectionné et si le coup est possible on le joue
         if joueur == 1:
+            # Liste des coups possible
             possi = list(graphe.successors(self.joueur1['pos']))
+            for possi in possi:
+                # Si notre coup est dans la liste on le joue
+                if position == possi:
+                    self.joueur1['pos'] = position
+            # Si on n'a pas joué de coup on soulève une erreur car la pos est 
+            # invalide 
+            if self.joueur1['pos'] != position :
+                raise QuoridorError
         elif joueur == 2:
+            # Liste des coups possible
             possi = list(graphe.successors(self.joueur2['pos']))
+            for possi in possi:
+                # Si notre coup est dans la liste on le joue
+                if position == possi:
+                    self.joueur2['pos'] = position
+            # Si on n'a pas joué de coup on soulève une erreur car la pos est 
+            # invalide 
+            if self.joueur1['pos'] != position :
+                raise QuoridorError
 
 
 
@@ -173,10 +210,11 @@ class Quoridor:
 
         Les murs actuellement placés sur le damier sont énumérés dans deux listes de
         positions (x, y). Les murs ont toujours une longueur de 2 cases et leur position
-        est relative à leur coin inférieur gauche. Par convention, un mur horizontal se
+        est relative à leur coin inférieur gauche. Par convention, un murs horizontal se
         situe entre les lignes y-1 et y, et bloque les colonnes x et x+1. De même, un
-        mur vertical se situe entre les colonnes x-1 et x, et bloque les lignes y et y+1.
+        murs vertical se situe entre les colonnes x-1 et x, et bloque les lignes y et y+1.
         """
+        # On retourne simplement l'état de la partie dans un dictionnaire
         return {'joueurs' : [self.joueur1, self.joueur2], 'murs' : 
                 {'horizontaux' : self.horizontaux, 'verticaux' : self.verticaux}}
 
@@ -184,7 +222,7 @@ class Quoridor:
         """
         Pour le joueur spécifié, jouer automatiquement son meilleur coup pour l'état actuel 
         de la partie. Ce coup est soit le déplacement de son jeton, soit le placement d'un 
-        mur horizontal ou vertical.
+        murs horizontal ou vertical.
 
         :param joueur: un entier spécifiant le numéro du joueur (1 ou 2).
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
@@ -200,13 +238,13 @@ class Quoridor:
 
     def placer_mur(self, joueur, position, orientation):
         """
-        Pour le joueur spécifié, placer un mur à la position spécifiée.
+        Pour le joueur spécifié, placer un murs à la position spécifiée.
 
         :param joueur: le numéro du joueur (1 ou 2).
-        :param position: le tuple (x, y) de la position du mur.
-        :param orientation: l'orientation du mur ('horizontal' ou 'vertical').
+        :param position: le tuple (x, y) de la position du murs.
+        :param orientation: l'orientation du murs ('horizontal' ou 'vertical').
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
-        :raises QuoridorError: si un mur occupe déjà cette position.
+        :raises QuoridorError: si un murs occupe déjà cette position.
         :raises QuoridorError: si la position est invalide pour cette orientation.
         :raises QuoridorError: si le joueur a déjà placé tous ses murs.
         """
