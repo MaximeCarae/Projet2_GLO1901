@@ -249,9 +249,7 @@ class Quoridor:
         :raises QuoridorError: si le joueur a déjà placé tous ses murs.
         """
 
-class QuoridorError(Exception):
-    def nianiania(self, ll):
-        return ll
+class QuoridorError(Exception): pass
 
 
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
