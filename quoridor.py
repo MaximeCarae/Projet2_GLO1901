@@ -84,6 +84,48 @@ class Quoridor:
 
         :returns: la chaîne de caractères de la représentation.
         """
+        # On commence la chaine sous forme de liste avec la première ligne
+        chaine = 3*[' '] + 35*['-'] + [' \n']
+        # On remplis toutes les lignes du milieu
+        for i in range(9, 0, -1): # On compte à l'envers pour placer bien les (y)
+            chaine += str(i) + ' | ' + 8*'.   ' + '. |'
+            if (i != 1):
+                chaine += '\n  |' + 34 * ' ' + ' |\n'
+        # On met la ligne de la limite du damier    
+        chaine += '\n--|' + 35*'-' + '\n  | '
+        # On met la ligne avec les nombres horizontaux (x)
+        for i in range(1,10):
+            chaine += str(i) + '   '
+
+        # On lit la liste des murs horizontaux
+        for self.horizontaux in self.horizontaux:
+            # Il y a 6 caractères pour les murs horizontaux donc on les place
+            for i in range(7):
+                chaine[42+ (19 - self.horizontaux[1]*2)*40 +
+                       4*(self.horizontaux[0]-1)+i] = '-'
+
+        # On lit la liste des murs verticaux        
+        for self.verticaux in self.verticaux:
+            # Il y a 3 caractères pour les murs verticaux donc on les place
+            for j in range(3):
+                chaine[35 + (16 - self.verticaux[1]*2 + j)*40 + 
+                           4*(self.verticaux[0]-1)+i] = '|'
+    
+        # On lit et on place le joueur 1
+        chaine[37 + (16 - self.pos1[1]*2+2)*40 +
+                           4*(self.pos1[0]-1)+6] = '1'
+    
+        # On lit et on place le joueur 2
+        chaine[37 + (16 - self.pos2[1]*2+2)*40 +
+                           4*(self.pos2[0]-1)+6] = '2'
+
+        # On retourne la chaine de caractère en ajoutant la légende et en faisant 
+        # un join() sur la liste. On sépare en trois fois pour ne pas 
+        # dépasser la colonne 80
+        legende = 'Légende: 1=' + str(self.joueur1)
+        legende = legende + ', 2=' + str(self.joueur2)
+        return  legende +'\n' + ''.join(chaine)
+
 
     def déplacer_jeton(self, joueur, position):
         """
