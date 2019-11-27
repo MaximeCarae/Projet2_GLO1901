@@ -30,6 +30,53 @@ class Quoridor:
         :raises QuoridorError: si la position d'un mur est invalide.
         """
 
+        if not(isinstance(joueurs, list)) :
+            raise QuoridorError
+
+        if len(joueurs) >= 2:
+            raise QuoridorError
+
+        if isinstance(joueurs[0], str):
+            self.joueur1 = joueurs[0]
+            self.mur1 = 10
+            self.pos1 = (5, 1)
+            self.joueur2 = joueurs[1]
+            self.mur2 = 10
+            self.pos2 = (5, 9)
+        elif isinstance(joueurs, dict):
+            self.joueur1 = joueurs[0]['nom']
+            self.mur1 = joueurs[0]['murs']
+            self.pos1 = joueurs[0]['pos']
+            self.joueur2 = joueurs[1]['nom']
+            self.mur2 = joueurs[1]['murs']
+            self.pos2 = joueurs[1]['pos']
+
+        if ((self.mur1 < 0) or (self.mur1 > 10) or (self.mur2 < 0) or (self.mur2 > 10)):
+            raise QuoridorError
+
+        if (not(1 <= self.pos1[0] <= 9) or not(1 <= self.pos1[1] <= 9) or 
+            not(1 <= self.pos2[0] <= 9) or not(1 <= self.pos2[1] <= 9)):
+            raise QuoridorError
+
+        if ((murs != None) and not(isinstance(murs, dict))):
+            raise QuoridorError
+
+        if murs != None :
+            self.verticaux = murs['verticaux']
+            self.horizontaux = murs['horizontaux']
+        
+        if len(self.verticaux) + len(self.horizontaux) + self.mur1 + self.mur2 != 20:
+            raise QuoridorError
+
+        for self.verticaux in self.verticaux:
+            if (not(2 <= self.verticaux[0] <= 9) or not(1 <= self.verticaux[1] <= 8)):
+                raise QuoridorError
+        
+        for self.horizontaux in self.horizontaux:
+            if (not(1 <= self.horizontaux[0] <= 8) or not(2 <= self.horizontaux[1] <= 9)):
+                raise QuoridorError
+
+
     def __str__(self):
         """
         Produire la représentation en art ascii correspondant à l'état actuel de la partie. 
