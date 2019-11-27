@@ -37,17 +37,26 @@ class Quoridor:
             raise QuoridorError
 
         if isinstance(joueurs[0], str):
-            self.joueur1 = {'nom' : joueurs[0], 'mur' : 10, 'pos' : (5,1)}
-            self.joueur2 = {'nom' : joueurs[1], 'mur' : 10, 'pos' : (5,1)}
+            self.joueur1 = joueurs[0]
+            
+            self.mur1 = 10
+            self.pos1 = (5, 1)
+            self.joueur2 = joueurs[1]
+            self.mur2 = 10
+            self.pos2 = (5, 9)
         elif isinstance(joueurs, dict):
-            self.joueur1 = {'nom' : joueurs[0]['nom'], 'mur' : joueurs[0]['murs'], 'pos' : joueurs[0]['pos']}
-            self.joueur2 = {'nom' : joueurs[1]['nom'], 'mur' : joueurs[1]['murs'], 'pos' : joueurs[1]['pos']}
+            self.joueur1 = joueurs[0]['nom']
+            self.mur1 = joueurs[0]['murs']
+            self.pos1 = joueurs[0]['pos']
+            self.joueur2 = joueurs[1]['nom']
+            self.mur2 = joueurs[1]['murs']
+            self.pos2 = joueurs[1]['pos']
 
-        if ((self.joueur1['mur'] < 0) or (self.joueur1['mur'] > 10) or (self.joueur2['mur'] < 0) or (self.joueur2['mur'] > 10)):
+        if ((self.mur1 < 0) or (self.mur1 > 10) or (self.mur2 < 0) or (self.mur2 > 10)):
             raise QuoridorError
 
-        if (not(1 <= self.joueur1['pos'][0] <= 9) or not(1 <= self.joueur1['pos'][1] <= 9) or 
-            not(1 <= self.joueur2['pos'][0] <= 9) or not(1 <= self.joueur2['pos'][1] <= 9)):
+        if (not(1 <= self.pos1[0] <= 9) or not(1 <= self.pos1[1] <= 9) or 
+            not(1 <= self.pos2[0] <= 9) or not(1 <= self.pos2[1] <= 9)):
             raise QuoridorError
 
         if ((murs != None) and not(isinstance(murs, dict))):
@@ -57,7 +66,7 @@ class Quoridor:
             self.verticaux = murs['verticaux']
             self.horizontaux = murs['horizontaux']
         
-        if len(self.verticaux) + len(self.horizontaux) + self.joueur1['mur'] + self.joueur2['mur'] != 20:
+        if len(self.verticaux) + len(self.horizontaux) + self.mur1 + self.mur2 != 20:
             raise QuoridorError
 
         for self.verticaux in self.verticaux:
@@ -104,12 +113,12 @@ class Quoridor:
                            4*(self.verticaux[0]-1)+i] = '|'
     
         # On lit et on place le joueur 1
-        chaine[37 + (16 - self.joueur1['pos'][1]*2+2)*40 +
-                           4*(self.joueur1['pos'][0]-1)+6] = '1'
+        chaine[37 + (16 - self.pos1[1]*2+2)*40 +
+                           4*(self.pos1[0]-1)+6] = '1'
     
         # On lit et on place le joueur 2
-        chaine[37 + (16 - self.joueur2['pos'][1]*2+2)*40 +
-                           4*(self.joueur2['pos'][0]-1)+6] = '2'
+        chaine[37 + (16 - self.pos2[1]*2+2)*40 +
+                           4*(self.pos2[0]-1)+6] = '2'
 
         # On retourne la chaine de caractère en ajoutant la légende et en faisant 
         # un join() sur la liste. On sépare en trois fois pour ne pas 
@@ -128,27 +137,7 @@ class Quoridor:
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
         :raises QuoridorError: si la position est invalide (en dehors du damier).
         :raises QuoridorError: si la position est invalide pour l'état actuel du jeu.
-        """
-
-        if (joueur != 1 or joueur != 2):
-            raise QuoridorError
-
-        if (not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9) or 
-            not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9)):
-            raise QuoridorError
-
-        état = Quoridor.état_partie(self)
-        graphe = construire_graphe(
-        [joueur['pos'] for joueur in état['joueurs']], 
-        état['murs']['horizontaux'],
-        état['murs']['verticaux'])
-
-        if joueur == 1:
-            possi = list(graphe.successors(self.joueur1['pos']))
-        elif joueur == 2:
-            possi = list(graphe.successors(self.joueur2['pos']))
-
-
+        """ 
 
     def état_partie(self):
         """
@@ -177,8 +166,6 @@ class Quoridor:
         situe entre les lignes y-1 et y, et bloque les colonnes x et x+1. De même, un
         mur vertical se situe entre les colonnes x-1 et x, et bloque les lignes y et y+1.
         """
-        return {'joueurs' : [self.joueur1, self.joueur2], 'murs' : 
-                {'horizontaux' : self.horizontaux, 'verticaux' : self.verticaux}}
 
     def jouer_coup(self, joueur):
         """
