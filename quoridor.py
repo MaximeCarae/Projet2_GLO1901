@@ -72,15 +72,15 @@ class Quoridor:
             raise QuoridorError
         # On vérifie la position des murs verticaux, 
         # si invalide on soulève une erreur
-        for self.verticaux in self.verticaux:
-            if (not(2 <= self.verticaux[0] <= 9) or
-                not(1 <= self.verticaux[1] <= 8)):
+        for i in self.verticaux:
+            if (not(2 <= i[0] <= 9) or
+                not(1 <= i[1] <= 8)):
                 raise QuoridorError
         # On vérifie la position des murs horizontaux, 
         # si invalide on soulève une erreur
-        for self.horizontaux in self.horizontaux:
-            if (not(1 <= self.horizontaux[0] <= 8) or
-                not(2 <= self.horizontaux[1] <= 9)):
+        for i in self.horizontaux:
+            if (not(1 <= i[0] <= 8) or
+                not(2 <= i[1] <= 9)):
                 raise QuoridorError
 
 
@@ -105,18 +105,18 @@ class Quoridor:
             chaine += str(i) + '   '
 
         # On lit la liste des murs horizontaux
-        for self.horizontaux in self.horizontaux:
+        for j in self.horizontaux:
             # Il y a 6 caractères pour les murs horizontaux donc on les place
             for i in range(7):
-                chaine[42+ (19 - self.horizontaux[1]*2)*40 +
-                       4*(self.horizontaux[0]-1)+i] = '-'
+                chaine[42+ (19 - j[1]*2)*40 +
+                       4*(j[0]-1)+i] = '-'
 
         # On lit la liste des murs verticaux        
-        for self.verticaux in self.verticaux:
+        for i in self.verticaux:
             # Il y a 3 caractères pour les murs verticaux donc on les place
             for j in range(3):
-                chaine[35 + (16 - self.verticaux[1]*2 + j)*40 + 
-                           4*(self.verticaux[0]-1)+i] = '|'
+                chaine[35 + (16 - i[1]*2 + j)*40 + 
+                           4*(i[0]-1)+i] = '|'
     
         # On lit et on place le joueur 1
         chaine[37 + (16 - self.joueur1['pos'][1]*2+2)*40 +
@@ -165,9 +165,9 @@ class Quoridor:
         if joueur == 1:
             # Liste des coups possible
             possi = list(graphe.successors(self.joueur1['pos']))
-            for possi in possi:
+            for i in possi:
                 # Si notre coup est dans la liste on le joue
-                if position == possi:
+                if position == i:
                     self.joueur1['pos'] = position
             # Si on n'a pas joué de coup on soulève une erreur car la pos est 
             # invalide 
@@ -176,9 +176,9 @@ class Quoridor:
         elif joueur == 2:
             # Liste des coups possible
             possi = list(graphe.successors(self.joueur2['pos']))
-            for possi in possi:
+            for i in possi:
                 # Si notre coup est dans la liste on le joue
-                if position == possi:
+                if position == i:
                     self.joueur2['pos'] = position
             # Si on n'a pas joué de coup on soulève une erreur car la pos est 
             # invalide 
