@@ -38,7 +38,7 @@ class Quoridor:
 
         if isinstance(joueurs[0], str):
             self.joueur1 = {'nom' : joueurs[0], 'mur' : 10, 'pos' : (5,1)}
-            self.joueur2 = {'nom' : joueurs[1], 'mur' : 10, 'pos' : (5,1)}
+            self.joueur2 = {'nom' : joueurs[1], 'mur' : 10, 'pos' : (5,9)}
         elif isinstance(joueurs, dict):
             self.joueur1 = {'nom' : joueurs[0]['nom'], 'mur' : joueurs[0]['murs'], 'pos' : joueurs[0]['pos']}
             self.joueur2 = {'nom' : joueurs[1]['nom'], 'mur' : joueurs[1]['murs'], 'pos' : joueurs[1]['pos']}
