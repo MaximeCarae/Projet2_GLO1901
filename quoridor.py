@@ -198,9 +198,9 @@ class Quoridor:
         :returns: le nom du gagnant si la partie est terminée; False autrement.
         """
  
-        if position[0] = 9 :
+        if position[0] == 9 :
             return joueur[0]
-        elif position[1] = 1 :
+        elif position[1] == 1 :
             return joueur[1]
         else :
             return False 
