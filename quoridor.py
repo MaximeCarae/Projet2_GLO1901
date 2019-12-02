@@ -248,15 +248,17 @@ class Quoridor:
 
         # Si on avait sélectionné le joueur 1, on le place à la meilleure
         # position possible
-        if joueur == 1:
-            self.joueur1["pos"] = list(graphe.successors(
-                (self.joueur1["pos"][0], self.joueur1["pos"][1])))[0]
+        if (joueur == 1 and nx.has_path(graphe, (self.joueur1["pos"][0],
+            self.joueur1["pos"][1]) , 'B1')):
+            self.joueur1["pos"] = nx.shortest_path(graphe,
+                (self.joueur1["pos"][0], self.joueur1["pos"][1]), 'B1')[1]
 
         # Si on avait sélectionné le joueur 2, on le place à la meilleure
         # position possible
-        if joueur == 2:
-            self.joueur2["pos"] = list(graphe.successors(
-                (self.joueur2["pos"][0], self.joueur2["pos"][1])))[0]
+        if (joueur == 2 and nx.has_path(graphe, (self.joueur2["pos"][0],
+            self.joueur2["pos"][1]) , 'B2')):
+            self.joueur2["pos"] = nx.shortest_path(graphe,
+                (self.joueur2["pos"][0], self.joueur2["pos"][1]), 'B2')[1]
 
 
 
@@ -402,3 +404,23 @@ def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
         graphe.add_edge((x, 1), 'B2')
 
     return graphe
+
+
+b = Quoridor([
+    {"nom": "idul", "murs": 10, "pos": (5, 1)}, {"nom": "automate", "murs": 10, "pos": (5, 9)}])
+
+b.jouer_coup(1)
+b.jouer_coup(2)
+b.jouer_coup(1)
+b.jouer_coup(2)
+b.jouer_coup(1)
+b.jouer_coup(2)
+b.jouer_coup(1)
+b.jouer_coup(2)
+b.jouer_coup(1)
+b.jouer_coup(2)
+b.jouer_coup(1)
+b.jouer_coup(2)
+
+print(str(b))
+print(b.état_partie())
