@@ -191,6 +191,9 @@ class Quoridor:
         :raises QuoridorError: si la partie est déjà terminée.
         """
 
+        if joueur not in [1, 2] or self.partie_terminée():
+            raise QuoridorError
+
         graphe = construire_graphe(
     [joueur['pos'] for joueur in état['joueurs']], 
     état['murs']['horizontaux'],
