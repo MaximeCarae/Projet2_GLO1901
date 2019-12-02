@@ -6,17 +6,17 @@ class Quoridor:
 
     def __init__(self, joueurs, murs=None):
         """
-        Initialiser une partie de Quoridor avec les joueurs et les murs spécifiés, 
+        Initialiser une partie de Quoridor avec les joueurs et les murs spécifiés,
         en s'assurant de faire une copie profonde de tout ce qui a besoin d'être copié.
 
-        :param joueurs: un itérable de deux joueurs dont le premier est toujours celui qui 
-        débute la partie. Un joueur est soit une chaîne de caractères soit un dictionnaire. 
-        Dans le cas d'une chaîne, il s'agit du nom du joueur. Selon le rang du joueur dans 
+        :param joueurs: un itérable de deux joueurs dont le premier est toujours celui qui
+        débute la partie. Un joueur est soit une chaîne de caractères soit un dictionnaire.
+        Dans le cas d'une chaîne, il s'agit du nom du joueur. Selon le rang du joueur dans
         l'itérable, sa position est soit (5,1) soit (5,9), et chaque joueur peut initialement
-        placer 10 murs. Dans le cas où l'argument est un dictionnaire, celui-ci doit contenir 
-        une clé 'nom' identifiant le joueur, une clé 'murs' spécifiant le nombre de murs qu'il 
+        placer 10 murs. Dans le cas où l'argument est un dictionnaire, celui-ci doit contenir
+        une clé 'nom' identifiant le joueur, une clé 'murs' spécifiant le nombre de murs qu'il
         peut encore placer, et une clé 'pos' qui spécifie sa position (x, y) actuelle.
-        
+
         :param murs: un dictionnaire contenant une clé 'horizontaux' associée à la liste des
         positions (x, y) des murs horizontaux, et une clé 'verticaux' associée à la liste des
         positions (x, y) des murs verticaux. Par défaut, il n'y a aucun murs placé sur le jeu.
@@ -30,7 +30,7 @@ class Quoridor:
         :raises QuoridorError: si la position d'un murs est invalide.
         """
         # On vérifie si joueur est itérable, si invalide on soulève une erreur
-        if not(isinstance(joueurs, list)) :
+        if not isinstance(joueurs, list):
             raise QuoridorError
         # On vérifie le nombre de joueur, si invalide on soulève une erreur
         if len(joueurs) > 2:
@@ -39,8 +39,8 @@ class Quoridor:
         # et on initialise les paramètres dans un dictionnaire en fonction
         if isinstance(joueurs[0], str):
             # Charactère donc nouvelle partie
-            self.joueur1 = {'nom' : joueurs[0], 'murs' : 10, 'pos' : (5,1)}
-            self.joueur2 = {'nom' : joueurs[1], 'murs' : 10, 'pos' : (5,9)}
+            self.joueur1 = {'nom' : joueurs[0], 'murs' : 10, 'pos' : (5, 1)}
+            self.joueur2 = {'nom' : joueurs[1], 'murs' : 10, 'pos' : (5, 9)}
         elif isinstance(joueurs[0], dict):
             # Dictionnaire donc partie en cours
             self.joueur1 = {'nom' : joueurs[0]['nom'],
@@ -50,42 +50,43 @@ class Quoridor:
                             'murs' : joueurs[1]['murs'],
                             'pos' : joueurs[1]['pos']}
         # Si un joueur à un nombre de murs invalide on soulève une erreur
-        if ((self.joueur1['murs'] < 0) or (self.joueur1['murs'] > 10) or 
-            (self.joueur2['murs'] < 0) or (self.joueur2['murs'] > 10)):
+        if ((self.joueur1['murs'] < 0) or (self.joueur1['murs'] > 10) or
+                (self.joueur2['murs'] < 0) or (self.joueur2['murs'] > 10)):
             raise QuoridorError
         # On vérifie la position des joueurs, si invalide on soulève une erreur
-        if (not(1 <= self.joueur1['pos'][0] <= 9) or 
-            not(1 <= self.joueur1['pos'][1] <= 9) or 
-            not(1 <= self.joueur2['pos'][0] <= 9) or 
-            not(1 <= self.joueur2['pos'][1] <= 9)):
+        if (not 1 <= self.joueur1['pos'][0] <= 9 or
+            not 1 <= self.joueur1['pos'][1] <= 9 or
+            not 1 <= self.joueur2['pos'][0] <= 9 or
+            not 1 <= self.joueur2['pos'][1] <= 9):
             raise QuoridorError
         # On vérifie le type de murs, si invalide on soulève une erreur
         if ((murs != None) and not(isinstance(murs, dict))):
             raise QuoridorError
         # Si il y a des murs, on enregistre leurs positions
-        if murs != None :
+        if murs != None:
             self.verticaux = murs['verticaux']
             self.horizontaux = murs['horizontaux']
-        else :
+        else:
             self.verticaux = []
             self.horizontaux = []
 
-        # On vérifie la position des murs verticaux, 
+        # On vérifie la position des murs verticaux,
         # si invalide on soulève une erreur
         for i in self.verticaux:
-            if (not(2 <= i[0] <= 9) or
-                not(1 <= i[1] <= 8)):
+            if (not 2 <= i[0] <= 9 or
+                    not 1 <= i[1] <= 8 ):
                 raise QuoridorError
         # On vérifie la position des murs horizontaux, 
         # si invalide on soulève une erreur
         for i in self.horizontaux:
-            if (not(1 <= i[0] <= 8) or
-                not(2 <= i[1] <= 9)):
+            if (not 1 <= i[0] <= 8 or
+                not 2 <= i[1] <= 9):
                 raise QuoridorError
-        
+
         # On vérifie le nombre de murs en jeu, si invalide on soulève une erreur
-        if ((murs != None) and (len(self.verticaux) + len(self.horizontaux) 
-                + self.joueur1['murs'] + self.joueur2['murs'] != 20)):
+        if ((murs != None) and (len(self.verticaux) + len(self.horizontaux)
+                                + self.joueur1['murs'] 
+                                + self.joueur2['murs'] != 20)):
             raise QuoridorError
         elif ((murs == None) and (self.joueur1['murs'] 
                 + self.joueur2['murs'] != 20)):
