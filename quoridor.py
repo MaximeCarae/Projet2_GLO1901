@@ -55,12 +55,12 @@ class Quoridor:
             raise QuoridorError
         # On vérifie la position des joueurs, si invalide on soulève une erreur
         if (not 1 <= self.joueur1['pos'][0] <= 9 or
-            not 1 <= self.joueur1['pos'][1] <= 9 or
-            not 1 <= self.joueur2['pos'][0] <= 9 or
-            not 1 <= self.joueur2['pos'][1] <= 9):
+                not 1 <= self.joueur1['pos'][1] <= 9 or
+                not 1 <= self.joueur2['pos'][0] <= 9 or
+                not 1 <= self.joueur2['pos'][1] <= 9):
             raise QuoridorError
         # On vérifie le type de murs, si invalide on soulève une erreur
-        if ((murs != None) and not(isinstance(murs, dict))):
+        if ((murs != None) and not isinstance(murs, dict)):
             raise QuoridorError
         # Si il y a des murs, on enregistre leurs positions
         if murs != None:
@@ -74,22 +74,22 @@ class Quoridor:
         # si invalide on soulève une erreur
         for i in self.verticaux:
             if (not 2 <= i[0] <= 9 or
-                    not 1 <= i[1] <= 8 ):
+                    not 1 <= i[1] <= 8):
                 raise QuoridorError
         # On vérifie la position des murs horizontaux, 
         # si invalide on soulève une erreur
         for i in self.horizontaux:
             if (not 1 <= i[0] <= 8 or
-                not 2 <= i[1] <= 9):
+                    not 2 <= i[1] <= 9):
                 raise QuoridorError
 
         # On vérifie le nombre de murs en jeu, si invalide on soulève une erreur
         if ((murs != None) and (len(self.verticaux) + len(self.horizontaux)
-                                + self.joueur1['murs'] 
+                                + self.joueur1['murs']
                                 + self.joueur2['murs'] != 20)):
             raise QuoridorError
-        elif ((murs == None) and (self.joueur1['murs'] 
-                + self.joueur2['murs'] != 20)):
+        elif ((murs == None) and (self.joueur1['murs']
+                                + self.joueur2['murs'] != 20)):
             raise QuoridorError
 
 
@@ -105,12 +105,12 @@ class Quoridor:
         # On remplis toutes les lignes du milieu
         for i in range(9, 0, -1): # On compte à l'envers pour placer bien les y
             chaine += str(i) + ' | ' + 8*'.   ' + '. |'
-            if (i != 1):
+            if i != 1:
                 chaine += '\n  |' + 34 * ' ' + ' |\n'
-        # On met la ligne de la limite du damier    
+        # On met la ligne de la limite du damier
         chaine += '\n--|' + 35*'-' + '\n  | '
         # On met la ligne avec les nombres horizontaux (x)
-        for i in range(1,10):
+        for i in range(1, 10):
             chaine += str(i) + '   '
 
         # On lit la liste des murs horizontaux
@@ -119,19 +119,19 @@ class Quoridor:
             for i in range(7):
                 chaine[42+ (19 - j[1]*2)*40 + 4*(j[0]-1)+i] = '-'
 
-        # On lit la liste des murs verticaux     
+        # On lit la liste des murs verticaux 
         for x in self.verticaux:
             # Il y a 3 caractères pour les murs verticaux donc on les place
             for y in range(3):
                 chaine[35 + (16 - x[1]*2 + y)*40 + 4*(x[0]-1)+6] = '|'
-    
+
         # On lit et on place le joueur 1
         chaine[37 + (16 - self.joueur1['pos'][1]*2+2)*40 +
-                           4*(self.joueur1['pos'][0]-1)+6] = '1'
+                                    4*(self.joueur1['pos'][0]-1)+6] = '1'
     
         # On lit et on place le joueur 2
         chaine[37 + (16 - self.joueur2['pos'][1]*2+2)*40 +
-                           4*(self.joueur2['pos'][0]-1)+6] = '2'
+                                    4*(self.joueur2['pos'][0]-1)+6] = '2'
 
         # On retourne la chaine de caractère en ajoutant la légende et en
         # faisant un join() sur la liste. On sépare en trois fois pour ne pas
@@ -155,18 +155,18 @@ class Quoridor:
         # une erreur
         if (joueur != 1 and joueur != 2):
             raise QuoridorError
-        
+
         # On vérifie si la position est valide, sinon on soulève une erreur
-        if (not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9) or 
-            not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9)):
+        if (not 1 <= position[0] <= 9 or not 1 <= position[1] <= 9 or
+                not 1 <= position[0] <= 9 or not 1 <= position[1] <= 9):
             raise QuoridorError
-        
+
         # On enregistre l'état de la partie, et on fait un graphe
         état = Quoridor.état_partie(self)
         graphe = construire_graphe(
-        [joueur['pos'] for joueur in état['joueurs']], 
-        état['murs']['horizontaux'],
-        état['murs']['verticaux'])
+        [joueur['pos'] for joueur in état['joueurs']],
+            état['murs']['horizontaux'],
+            état['murs']['verticaux'])
 
         # On vérfie le joueur sélectionné et si le coup est possible on le joue
         if joueur == 1:
@@ -176,9 +176,9 @@ class Quoridor:
                 # Si notre coup est dans la liste on le joue
                 if position == i:
                     self.joueur1['pos'] = position
-            # Si on n'a pas joué de coup on soulève une erreur car la pos est 
-            # invalide 
-            if self.joueur1['pos'] != position :
+            # Si on n'a pas joué de coup on soulève une erreur car la pos est
+            # invalide
+            if self.joueur1['pos'] != position:
                 raise QuoridorError
         elif joueur == 2:
             # Liste des coups possible
@@ -187,9 +187,9 @@ class Quoridor:
                 # Si notre coup est dans la liste on le joue
                 if position == i:
                     self.joueur2['pos'] = position
-            # Si on n'a pas joué de coup on soulève une erreur car la pos est 
-            # invalide 
-            if self.joueur2['pos'] != position :
+            # Si on n'a pas joué de coup on soulève une erreur car la pos est
+            # invalide
+            if self.joueur2['pos'] != position:
                 raise QuoridorError
 
 
@@ -209,10 +209,10 @@ class Quoridor:
                 'verticaux': [...],
             }
         }
-        
-        où la clé 'nom' d'un joueur est associée à son nom, la clé 'murs' est associée 
-        au nombre de murs qu'il peut encore placer sur ce damier, et la clé 'pos' est 
-        associée à sa position sur le damier. Une position est représentée par un tuple 
+
+        où la clé 'nom' d'un joueur est associée à son nom, la clé 'murs' est associée
+        au nombre de murs qu'il peut encore placer sur ce damier, et la clé 'pos' est
+        associée à sa position sur le damier. Une position est représentée par un tuple
         de deux coordonnées x et y, où 1<=x<=9 et 1<=y<=9.
 
         Les murs actuellement placés sur le damier sont énumérés dans deux listes de
@@ -222,13 +222,13 @@ class Quoridor:
         murs vertical se situe entre les colonnes x-1 et x, et bloque les lignes y et y+1.
         """
         # On retourne simplement l'état de la partie dans un dictionnaire
-        return {'joueurs' : [self.joueur1, self.joueur2], 'murs' : 
+        return {'joueurs' : [self.joueur1, self.joueur2], 'murs' :
                 {'horizontaux' : self.horizontaux, 'verticaux' : self.verticaux}}
 
     def jouer_coup(self, joueur):
         """
-        Pour le joueur spécifié, jouer automatiquement son meilleur coup pour l'état actuel 
-        de la partie. Ce coup est soit le déplacement de son jeton, soit le placement d'un 
+        Pour le joueur spécifié, jouer automatiquement son meilleur coup pour l'état actuel
+        de la partie. Ce coup est soit le déplacement de son jeton, soit le placement d'un
         murs horizontal ou vertical.
         :param joueur: un entier spécifiant le numéro du joueur (1 ou 2).
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
@@ -243,8 +243,8 @@ class Quoridor:
         état = Quoridor.état_partie(self)
         graphe = construire_graphe(
         [joueur['pos'] for joueur in état['joueurs']], 
-        état['murs']['horizontaux'],
-        état['murs']['verticaux']
+            état['murs']['horizontaux'],
+            état['murs']['verticaux']
         )
 
         # Si on avait sélectionné le joueur 1, on le place à la meilleure
