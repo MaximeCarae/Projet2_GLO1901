@@ -227,11 +227,12 @@ class Quoridor:
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
         :raises QuoridorError: si la partie est déjà terminée.
         """
-
+        # On vérifie si la partie est terminée, ou si le numéro de joueur est
+        # mauvais, si c'est le cas on soulève une erreur
         if joueur not in [1, 2] or self.partie_terminée():
             raise QuoridorError
 
-
+        # On créé le graphe pour pouvoir tester les positions possibles
         état = Quoridor.état_partie(self)
         graphe = construire_graphe(
         [joueur['pos'] for joueur in état['joueurs']], 
@@ -239,11 +240,17 @@ class Quoridor:
         état['murs']['verticaux']
         )
 
+        # Si on avait sélectionné le joueur 1, on le place à la meilleure
+        # position possible
         if joueur == 1:
-            self.joueur1["pos"] = list(graphe.successors((self.joueur1["pos"][0], self.joueur1["pos"][1])))[0]
+            self.joueur1["pos"] = list(graphe.successors(
+                (self.joueur1["pos"][0], self.joueur1["pos"][1])))[0]
 
+        # Si on avait sélectionné le joueur 2, on le place à la meilleure
+        # position possible
         if joueur == 2:
-            self.joueur2["pos"] = list(graphe.successors((self.joueur2["pos"][0], self.joueur2["pos"][1])))[0]
+            self.joueur2["pos"] = list(graphe.successors(
+                (self.joueur2["pos"][0], self.joueur2["pos"][1])))[0]
 
 
 
@@ -252,6 +259,8 @@ class Quoridor:
         Déterminer si la partie est terminée.
         :returns: le nom du gagnant si la partie est terminée; False autrement.
         """
+        # On vérifie si le joueur 1 ou 2 sont à la dernière position,
+        # si c'est le cas on retourne le nom du joueur. Sinon on retourne False
         if self.joueur1['pos'][1] == 9 :
             return self.joueur1['nom']
         elif self.joueur2['pos'][1] == 1 :
@@ -270,20 +279,28 @@ class Quoridor:
         :raises QuoridorError: si la position est invalide pour cette orientation.
         :raises QuoridorError: si le joueur a déjà placé tous ses murs.
         """
-
+        # On vérifie si le numéro de joueur est valide, sinon on
+        # soulève une erreur
         if joueur not in [1, 2]:
             raise QuoridorError
-
+        # On vérifie si l'orientation du mur est valide ou s'il y a déjà un
+        # mur à cette position, sinon on soulève une erreur
         if ((orientation == "vertical" and position in self.verticaux) or
             (orientation == "horizontal" and position in self.horizontaux)):
             raise QuoridorError
-
+        
+        # On vérifie si le joueur 1 et sélectionné et dans ce cas, si il a
+        # placé tous ses murs, si c'est le cas on soulève une erreur
         if joueur == 1 and not self.joueur1["mur"]:
             raise QuoridorError
 
+        # On vérifie si le joueur 2 et sélectionné et dans ce cas, si il a
+        # placé tous ses murs, si c'est le cas on soulève une erreur
         if joueur == 2 and not self.joueur2["mur"]:
             raise QuoridorError
-
+        
+        # On place le position du mur dans sa liste correspondante si aucune
+        # des erreurs possiblent n'a été soulevées
         if position == "vertical":
             self.verticaux += position
         if position == "horizontal":
