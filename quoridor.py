@@ -8,7 +8,6 @@ class Quoridor:
         """
         Initialiser une partie de Quoridor avec les joueurs et les murs spécifiés, 
         en s'assurant de faire une copie profonde de tout ce qui a besoin d'être copié.
-
         :param joueurs: un itérable de deux joueurs dont le premier est toujours celui qui 
         débute la partie. Un joueur est soit une chaîne de caractères soit un dictionnaire. 
         Dans le cas d'une chaîne, il s'agit du nom du joueur. Selon le rang du joueur dans 
@@ -19,8 +18,12 @@ class Quoridor:
         
         :param murs: un dictionnaire contenant une clé 'horizontaux' associée à la liste des
         positions (x, y) des murs horizontaux, et une clé 'verticaux' associée à la liste des
+<<<<<<< Updated upstream
         positions (x, y) des murs verticaux. Par défaut, il n'y a aucun mur placé sur le jeu.
 
+=======
+        positions (x, y) des murs verticaux. Par défaut, il n'y a aucun murs placé sur le jeu.
+>>>>>>> Stashed changes
         :raises QuoridorError: si l'argument 'joueurs' n'est pas itérable.
         :raises QuoridorError: si l'itérable de joueurs en contient plus de deux.
         :raises QuoridorError: si le nombre de murs qu'un joueur peut placer est >10, ou négatif.
@@ -73,7 +76,6 @@ class Quoridor:
         """
         Produire la représentation en art ascii correspondant à l'état actuel de la partie. 
         Cette représentation est la même que celle du TP précédent.
-
         :returns: la chaîne de caractères de la représentation.
         """
         # On commence la chaine sous forme de liste avec la première ligne
@@ -122,7 +124,6 @@ class Quoridor:
     def déplacer_jeton(self, joueur, position):
         """
         Pour le joueur spécifié, déplacer son jeton à la position spécifiée.
-
         :param joueur: un entier spécifiant le numéro du joueur (1 ou 2).
         :param position: le tuple (x, y) de la position du jeton (1<=x<=9 et 1<=y<=9).
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
@@ -132,9 +133,15 @@ class Quoridor:
 
         if (joueur != 1 or joueur != 2):
             raise QuoridorError
+<<<<<<< Updated upstream
 
         if (not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9) or 
             not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9)):
+=======
+        
+        # On vérifie si la position est valide, sinon on soulève une erreur
+        if (not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9)):
+>>>>>>> Stashed changes
             raise QuoridorError
 
         état = Quoridor.état_partie(self)
@@ -153,7 +160,6 @@ class Quoridor:
     def état_partie(self):
         """
         Produire l'état actuel de la partie.
-
         :returns: une copie de l'état actuel du jeu sous la forme d'un dictionnaire:
         {
             'joueurs': [
@@ -170,7 +176,6 @@ class Quoridor:
         au nombre de murs qu'il peut encore placer sur ce damier, et la clé 'pos' est 
         associée à sa position sur le damier. Une position est représentée par un tuple 
         de deux coordonnées x et y, où 1<=x<=9 et 1<=y<=9.
-
         Les murs actuellement placés sur le damier sont énumérés dans deux listes de
         positions (x, y). Les murs ont toujours une longueur de 2 cases et leur position
         est relative à leur coin inférieur gauche. Par convention, un mur horizontal se
@@ -185,19 +190,39 @@ class Quoridor:
         Pour le joueur spécifié, jouer automatiquement son meilleur coup pour l'état actuel 
         de la partie. Ce coup est soit le déplacement de son jeton, soit le placement d'un 
         mur horizontal ou vertical.
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         :param joueur: un entier spécifiant le numéro du joueur (1 ou 2).
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
         :raises QuoridorError: si la partie est déjà terminée.
         """
 
+<<<<<<< Updated upstream
         if 
+=======
+        if joueur not in [1, 2] or self.partie_terminée():
+            raise QuoridorError
+        
+        état = Quoridor.état_partie(self)
+        graphe = construire_graphe(
+                    [joueur['pos'] for joueur in état['joueurs']], 
+                    état['murs']['horizontaux'],
+                    état['murs']['verticaux']
+        )
+
+        if joueur == 1:
+            self.joueur1["pos"] = list(graphe.successors((self.joueur1["pos"][0], self.joueur1["pos"][1])))[0]
+
+        if joueur == 2:
+            self.joueur2["pos"] = list(graphe.successors((self.joueur2["pos"][0], self.joueur2["pos"][1])))[0]
+>>>>>>> Stashed changes
 
 
     def partie_terminée(self):
         """
         Déterminer si la partie est terminée.
-
         :returns: le nom du gagnant si la partie est terminée; False autrement.
         """
  
@@ -211,7 +236,10 @@ class Quoridor:
     def placer_mur(self, joueur, position, orientation):
         """
         Pour le joueur spécifié, placer un mur à la position spécifiée.
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         :param joueur: le numéro du joueur (1 ou 2).
         :param position: le tuple (x, y) de la position du mur.
         :param orientation: l'orientation du mur ('horizontal' ou 'vertical').
@@ -224,8 +252,13 @@ class Quoridor:
         if joueur not in [1, 2]:
             raise QuoridorError
 
+<<<<<<< Updated upstream
         if (orientation == "vertical" and position in self.verticaux) or
         (orientation == "horizontal" and position in self.horizontaux):
+=======
+        if ((orientation == "vertical" and position in self.verticaux) or
+            (orientation == "horizontal" and position in self.horizontaux)):
+>>>>>>> Stashed changes
             raise QuoridorError
 
         if joueur == 1 and not self.joueur1["mur"]:
@@ -239,6 +272,7 @@ class Quoridor:
         if position == "horizontal":
             self.horizontaux += position
 
+<<<<<<< Updated upstream
         
 
 
@@ -254,12 +288,15 @@ class QuoridorError(Exception):
 
 
 
+=======
+
+class QuoridorError(Exception): pass
+>>>>>>> Stashed changes
 
 
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
     """
     Crée le graphe des déplacements admissibles pour les joueurs.
-
     :param joueurs: une liste des positions (x,y) des joueurs.
     :param murs_horizontaux: une liste des positions (x,y) des murs horizontaux.
     :param murs_verticaux: une liste des positions (x,y) des murs verticaux.
@@ -321,4 +358,3 @@ def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
         graphe.add_edge((x, 1), 'B2')
 
     return graphe
-
