@@ -76,7 +76,7 @@ class Quoridor:
             if (not 2 <= i[0] <= 9 or
                     not 1 <= i[1] <= 8):
                 raise QuoridorError
-        # On vérifie la position des murs horizontaux, 
+        # On vérifie la position des murs horizontaux,
         # si invalide on soulève une erreur
         for i in self.horizontaux:
             if (not 1 <= i[0] <= 8 or
@@ -89,7 +89,7 @@ class Quoridor:
                                 + self.joueur2['murs'] != 20)):
             raise QuoridorError
         elif ((murs == None) and (self.joueur1['murs']
-                                + self.joueur2['murs'] != 20)):
+                                  + self.joueur2['murs'] != 20)):
             raise QuoridorError
 
 
@@ -119,7 +119,7 @@ class Quoridor:
             for i in range(7):
                 chaine[42+ (19 - j[1]*2)*40 + 4*(j[0]-1)+i] = '-'
 
-        # On lit la liste des murs verticaux 
+        # On lit la liste des murs verticaux
         for x in self.verticaux:
             # Il y a 3 caractères pour les murs verticaux donc on les place
             for y in range(3):
@@ -127,11 +127,11 @@ class Quoridor:
 
         # On lit et on place le joueur 1
         chaine[37 + (16 - self.joueur1['pos'][1]*2+2)*40 +
-                                    4*(self.joueur1['pos'][0]-1)+6] = '1'
+                4*(self.joueur1['pos'][0]-1)+6] = '1'
     
         # On lit et on place le joueur 2
         chaine[37 + (16 - self.joueur2['pos'][1]*2+2)*40 +
-                                    4*(self.joueur2['pos'][0]-1)+6] = '2'
+                4*(self.joueur2['pos'][0]-1)+6] = '2'
 
         # On retourne la chaine de caractère en ajoutant la légende et en
         # faisant un join() sur la liste. On sépare en trois fois pour ne pas
@@ -164,7 +164,7 @@ class Quoridor:
         # On enregistre l'état de la partie, et on fait un graphe
         état = Quoridor.état_partie(self)
         graphe = construire_graphe(
-        [joueur['pos'] for joueur in état['joueurs']],
+            [joueur['pos'] for joueur in état['joueurs']],
             état['murs']['horizontaux'],
             état['murs']['verticaux'])
 
@@ -242,7 +242,7 @@ class Quoridor:
         # On créé le graphe pour pouvoir tester les positions possibles
         état = Quoridor.état_partie(self)
         graphe = construire_graphe(
-        [joueur['pos'] for joueur in état['joueurs']], 
+            [joueur['pos'] for joueur in état['joueurs']], 
             état['murs']['horizontaux'],
             état['murs']['verticaux']
         )
@@ -250,7 +250,8 @@ class Quoridor:
         # Si on avait sélectionné le joueur 1, on le place à la meilleure
         # position possible
         if (joueur == 1 and nx.has_path(graphe, (self.joueur1["pos"][0],
-            self.joueur1["pos"][1]) , 'B1')):
+                                                 self.joueur1["pos"][1]),
+                                                 'B1')):
             self.joueur1["pos"] = nx.shortest_path(graphe,
                 (self.joueur1["pos"][0], self.joueur1["pos"][1]), 'B1')[1]
 
