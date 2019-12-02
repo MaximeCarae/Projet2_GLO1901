@@ -201,12 +201,11 @@ class Quoridor:
         )
 
         if joueur == 1:
-            self.joueur1["pos"] = 
-        list(graphe.successors((self.joueur1["pos"][0], self.joueur1["pos"][1])))[0]
+            self.joueur1["pos"] = list(graphe.successors((self.joueur1["pos"][0], self.joueur1["pos"][1])))[0]
+        
 
         if joueur == 2:
-            self.joueur2["pos"] = 
-        list(graphe.successors((self.joueur2["pos"][0], self.joueur2["pos"][1])))[0]
+            self.joueur2["pos"] = list(graphe.successors((self.joueur2["pos"][0], self.joueur2["pos"][1])))[0]
 
 
 
