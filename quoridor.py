@@ -191,6 +191,9 @@ class Quoridor:
         :raises QuoridorError: si la partie est déjà terminée.
         """
 
+        if 
+
+
     def partie_terminée(self):
         """
         Déterminer si la partie est terminée.
@@ -218,9 +221,39 @@ class Quoridor:
         :raises QuoridorError: si le joueur a déjà placé tous ses murs.
         """
 
+        if joueur not in [1, 2]:
+            raise QuoridorError
+
+        if (orientation == "vertical" and position in self.verticaux) or
+        (orientation == "horizontal" and position in self.horizontaux):
+            raise QuoridorError
+
+        if joueur == 1 and not self.joueur1["mur"]:
+            raise QuoridorError
+
+        if joueur == 2 and not self.joueur2["mur"]:
+            raise QuoridorError
+
+        if position == "vertical":
+            self.verticaux += position
+        if position == "horizontal":
+            self.horizontaux += position
+
+        
+
+
 class QuoridorError(Exception):
-    def nianiania(self, ll):
-        return ll
+    pass
+
+
+
+
+
+
+
+
+
+
 
 
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
