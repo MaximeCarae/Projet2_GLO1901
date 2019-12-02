@@ -33,15 +33,15 @@ class Quoridor:
         if not(isinstance(joueurs, list)) :
             raise QuoridorError
         # On vérifie le nombre de joueur, si invalide on soulève une erreur
-        if len(joueurs) >= 2:
+        if len(joueurs) > 2:
             raise QuoridorError
         # On différencie si c'est une chaine de charactère ou un dictionnaire
         # et on initialise les paramètres dans un dictionnaire en fonction
         if isinstance(joueurs[0], str):
             # Charactère donc nouvelle partie
             self.joueur1 = {'nom' : joueurs[0], 'murs' : 10, 'pos' : (5,1)}
-            self.joueur2 = {'nom' : joueurs[1], 'murs' : 10, 'pos' : (5,1)}
-        elif isinstance(joueurs, dict):
+            self.joueur2 = {'nom' : joueurs[1], 'murs' : 10, 'pos' : (5,9)}
+        elif isinstance(joueurs[0], dict):
             # Dictionnaire donc partie en cours
             self.joueur1 = {'nom' : joueurs[0]['nom'],
                             'murs' : joueurs[0]['murs'],
@@ -66,10 +66,10 @@ class Quoridor:
         if murs != None :
             self.verticaux = murs['verticaux']
             self.horizontaux = murs['horizontaux']
-        # On vérifie le nombre de murs en jeu, si invalide on soulève une erreur
-        if (len(self.verticaux) + len(self.horizontaux) + self.joueur1['murs'] 
-                + self.joueur2['murs'] != 20):
-            raise QuoridorError
+        else :
+            self.verticaux = []
+            self.horizontaux = []
+
         # On vérifie la position des murs verticaux, 
         # si invalide on soulève une erreur
         for i in self.verticaux:
@@ -82,6 +82,14 @@ class Quoridor:
             if (not(1 <= i[0] <= 8) or
                 not(2 <= i[1] <= 9)):
                 raise QuoridorError
+        
+        # On vérifie le nombre de murs en jeu, si invalide on soulève une erreur
+        if ((murs != None) and (len(self.verticaux) + len(self.horizontaux) 
+                + self.joueur1['murs'] + self.joueur2['murs'] != 20)):
+            raise QuoridorError
+        elif ((murs == None) and (self.joueur1['murs'] 
+                + self.joueur2['murs'] != 20)):
+            raise QuoridorError
 
 
     def __str__(self):
@@ -108,15 +116,13 @@ class Quoridor:
         for j in self.horizontaux:
             # Il y a 6 caractères pour les murs horizontaux donc on les place
             for i in range(7):
-                chaine[42+ (19 - j[1]*2)*40 +
-                       4*(j[0]-1)+i] = '-'
+                chaine[42+ (19 - j[1]*2)*40 + 4*(j[0]-1)+i] = '-'
 
-        # On lit la liste des murs verticaux        
-        for i in self.verticaux:
+        # On lit la liste des murs verticaux     
+        for x in self.verticaux:
             # Il y a 3 caractères pour les murs verticaux donc on les place
-            for j in range(3):
-                chaine[35 + (16 - i[1]*2 + j)*40 + 
-                           4*(i[0]-1)+i] = '|'
+            for y in range(3):
+                chaine[35 + (16 - x[1]*2 + y)*40 + 4*(x[0]-1)+6] = '|'
     
         # On lit et on place le joueur 1
         chaine[37 + (16 - self.joueur1['pos'][1]*2+2)*40 +
@@ -129,8 +135,8 @@ class Quoridor:
         # On retourne la chaine de caractère en ajoutant la légende et en
         # faisant un join() sur la liste. On sépare en trois fois pour ne pas
         # dépasser la colonne 80
-        legende = 'Légende: 1=' + str(self.joueur1)
-        legende = legende + ', 2=' + str(self.joueur2)
+        legende = 'Légende: 1=' + str(self.joueur1['nom'])
+        legende = legende + ', 2=' + str(self.joueur2['nom'])
         return  legende +'\n' + ''.join(chaine)
 
 
@@ -146,7 +152,7 @@ class Quoridor:
         """
         # On vérifie si le numéro de joueur est valide, sinon on soulève
         # une erreur
-        if (joueur != 1 or joueur != 2):
+        if (joueur != 1 and joueur != 2):
             raise QuoridorError
         
         # On vérifie si la position est valide, sinon on soulève une erreur
@@ -182,7 +188,7 @@ class Quoridor:
                     self.joueur2['pos'] = position
             # Si on n'a pas joué de coup on soulève une erreur car la pos est 
             # invalide 
-            if self.joueur1['pos'] != position :
+            if self.joueur2['pos'] != position :
                 raise QuoridorError
 
 
