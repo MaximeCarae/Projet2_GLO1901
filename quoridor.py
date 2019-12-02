@@ -130,7 +130,7 @@ class Quoridor:
         :raises QuoridorError: si la position est invalide pour l'état actuel du jeu.
         """
 
-        if (joueur != 1 or joueur != 2):
+        if (joueur not in  [1, 2]):
             raise QuoridorError
 
         if (not(1 <= position[0] <= 9) or not(1 <= position[1] <= 9) or 
@@ -191,10 +191,23 @@ class Quoridor:
         :raises QuoridorError: si la partie est déjà terminée.
         """
 
-        if 
+        graphe = construire_graphe(
+    [joueur['pos'] for joueur in état['joueurs']], 
+    état['murs']['horizontaux'],
+    état['murs']['verticaux']
+        )
+
+        if joueur == 1:
+            self.joueur1["pos"] = 
+        list(graphe.successors((self.joueur1["pos"][0], self.joueur1["pos"][1])))[0]
+
+        if joueur == 2:
+            self.joueur2["pos"] = 
+        list(graphe.successors((self.joueur2["pos"][0], self.joueur2["pos"][1])))[0]
 
 
-    def partie_terminée(self):
+
+        def partie_terminée(self):
         """
         Déterminer si la partie est terminée.
 
@@ -239,7 +252,7 @@ class Quoridor:
         if position == "horizontal":
             self.horizontaux += position
 
-        
+
 
 
 class QuoridorError(Exception):
