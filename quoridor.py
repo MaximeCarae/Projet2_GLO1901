@@ -228,7 +228,7 @@ class Quoridor:
         """
         Pour le joueur spécifié, jouer automatiquement son meilleur coup pour l'état actuel 
         de la partie. Ce coup est soit le déplacement de son jeton, soit le placement d'un 
-        mur horizontal ou vertical.
+        murs horizontal ou vertical.
         :param joueur: un entier spécifiant le numéro du joueur (1 ou 2).
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
         :raises QuoridorError: si la partie est déjà terminée.
@@ -276,12 +276,12 @@ class Quoridor:
 
     def placer_mur(self, joueur, position, orientation):
         """
-        Pour le joueur spécifié, placer un mur à la position spécifiée.
+        Pour le joueur spécifié, placer un murs à la position spécifiée.
         :param joueur: le numéro du joueur (1 ou 2).
-        :param position: le tuple (x, y) de la position du mur.
-        :param orientation: l'orientation du mur ('horizontal' ou 'vertical').
+        :param position: le tuple (x, y) de la position du murs.
+        :param orientation: l'orientation du murs ('horizontal' ou 'vertical').
         :raises QuoridorError: si le numéro du joueur est autre que 1 ou 2.
-        :raises QuoridorError: si un mur occupe déjà cette position.
+        :raises QuoridorError: si un murs occupe déjà cette position.
         :raises QuoridorError: si la position est invalide pour cette orientation.
         :raises QuoridorError: si le joueur a déjà placé tous ses murs.
         """
@@ -289,28 +289,47 @@ class Quoridor:
         # soulève une erreur
         if joueur not in [1, 2]:
             raise QuoridorError
-        # On vérifie si l'orientation du mur est valide ou s'il y a déjà un
-        # mur à cette position, sinon on soulève une erreur
+        # On vérifie si l'orientation du murs est valide ou s'il y a déjà un
+        # murs à cette position, sinon on soulève une erreur
         if ((orientation == "vertical" and position in self.verticaux) or
             (orientation == "horizontal" and position in self.horizontaux)):
             raise QuoridorError
+
+        # On vérifie la position des murs verticaux, 
+        # si invalide on soulève une erreur
+        if (orientation == 'vertical'):
+            if (not(2 <= position[0] <= 9) or
+                not(1 <= position[1] <= 8)):
+                raise QuoridorError
+        # On vérifie la position des murs horizontaux, 
+        # si invalide on soulève une erreur
+        if (orientation == 'horizontal'):
+            if (not(1 <= position[0] <= 8) or
+                not(2 <= position[1] <= 9)):
+                raise QuoridorError
         
-        # On vérifie si le joueur 1 et sélectionné et dans ce cas, si il a
-        # placé tous ses murs, si c'est le cas on soulève une erreur
-        if joueur == 1 and not self.joueur1["mur"]:
+        # On vérifie si le joueur 1 et sélectionné et qu'il a
+        # placé tous ses murs, on soulève une erreur
+        if (joueur == 1 and not self.joueur1["murs"]):
             raise QuoridorError
 
-        # On vérifie si le joueur 2 et sélectionné et dans ce cas, si il a
-        # placé tous ses murs, si c'est le cas on soulève une erreur
-        if joueur == 2 and not self.joueur2["mur"]:
+        # On vérifie si le joueur 2 et sélectionné et dans qu'il a
+        # placé tous ses murs, on soulève une erreur
+        if (joueur == 2 and not self.joueur2["murs"]):
             raise QuoridorError
         
-        # On place le position du mur dans sa liste correspondante si aucune
+        # On place le position du murs dans sa liste correspondante si aucune
         # des erreurs possiblent n'a été soulevées
-        if position == "vertical":
-            self.verticaux += position
-        if position == "horizontal":
-            self.horizontaux += position
+        if orientation == "vertical":
+            self.verticaux.append(position)
+        if orientation == "horizontal":
+            self.horizontaux.append(position)
+        
+        # On incrémente le nombre de mur restant
+        if joueur == 1:
+            self.joueur1["murs"] += -1
+        if joueur == 2:
+            self.joueur2["murs"] += -1
 
 
 
