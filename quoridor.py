@@ -231,6 +231,7 @@ class Quoridor:
         if joueur not in [1, 2] or self.partie_terminée():
             raise QuoridorError
 
+
         état = Quoridor.état_partie(self)
         graphe = construire_graphe(
         [joueur['pos'] for joueur in état['joueurs']], 
@@ -288,7 +289,10 @@ class Quoridor:
         if position == "horizontal":
             self.horizontaux += position
 
+
+
 class QuoridorError(Exception): pass
+
 
 
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
