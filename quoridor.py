@@ -1,5 +1,4 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 
 
 class Quoridor:
@@ -60,10 +59,10 @@ class Quoridor:
                 not 1 <= self.joueur2['pos'][1] <= 9):
             raise QuoridorError
         # On vérifie le type de murs, si invalide on soulève une erreur
-        if ((murs != None) and not isinstance(murs, dict)):
+        if ((murs is not None) and not isinstance(murs, dict)):
             raise QuoridorError
         # Si il y a des murs, on enregistre leurs positions
-        if murs != None:
+        if murs is not None:
             self.verticaux = murs['verticaux']
             self.horizontaux = murs['horizontaux']
         else:
@@ -84,11 +83,11 @@ class Quoridor:
                 raise QuoridorError
 
         # On vérifie le nombre de murs en jeu, si invalide on soulève une erreur
-        if ((murs != None) and (len(self.verticaux) + len(self.horizontaux)
+        if ((murs is not None) and (len(self.verticaux) + len(self.horizontaux)
                                 + self.joueur1['murs']
                                 + self.joueur2['murs'] != 20)):
             raise QuoridorError
-        elif ((murs == None) and (self.joueur1['murs']
+        elif ((murs is None) and (self.joueur1['murs']
                                   + self.joueur2['murs'] != 20)):
             raise QuoridorError
 
@@ -153,7 +152,7 @@ class Quoridor:
         """
         # On vérifie si le numéro de joueur est valide, sinon on soulève
         # une erreur
-        if (joueur != 1 and joueur != 2):
+        if joueur not in [1, 2]:
             raise QuoridorError
 
         # On vérifie si la position est valide, sinon on soulève une erreur
@@ -253,9 +252,9 @@ class Quoridor:
                                                  self.joueur1["pos"][1]),
                                         'B1')):
             self.joueur1["pos"] = nx.shortest_path(graphe,
-                                                    (self.joueur1["pos"][0],
-                                                    self.joueur1["pos"][1]),
-                                                    'B1')[1]
+                                                   (self.joueur1["pos"][0],
+                                                     self.joueur1["pos"][1]),
+                                                   'B1')[1]
 
         # Si on avait sélectionné le joueur 2, on le place à la meilleure
         # position possible
@@ -263,9 +262,9 @@ class Quoridor:
                                                  self.joueur2["pos"][1]),
                                         'B2')):
             self.joueur2["pos"] = nx.shortest_path(graphe,
-                                                    (self.joueur2["pos"][0],
+                                                   (self.joueur2["pos"][0],
                                                     self.joueur2["pos"][1]),
-                                                    'B2')[1]
+                                                   'B2')[1]
 
 
     def partie_terminée(self):
@@ -277,7 +276,8 @@ class Quoridor:
         # si c'est le cas on retourne le nom du joueur. Sinon on retourne False
         if self.joueur1['pos'][1] == 9:
             return self.joueur1['nom']
-        elif self.joueur2['pos'][1] == 1:
+
+        if self.joueur2['pos'][1] == 1:
             return self.joueur2['nom']
         else:
             return False
@@ -305,13 +305,13 @@ class Quoridor:
 
         # On vérifie la position des murs verticaux,
         # si invalide on soulève une erreur
-        if (orientation == 'vertical'):
+        if orientation == 'vertical':
             if (not 2 <= position[0] <= 9 or
                     not 1 <= position[1] <= 8):
                 raise QuoridorError
         # On vérifie la position des murs horizontaux,
         # si invalide on soulève une erreur
-        if (orientation == 'horizontal'):
+        if orientation == 'horizontal':
             if (not 1 <= position[0] <= 8 or
                     not 2 <= position[1] <= 9):
                 raise QuoridorError
@@ -340,9 +340,8 @@ class Quoridor:
             self.joueur2["murs"] += -1
 
 
-
-class QuoridorError(Exception): pass
-
+class QuoridorError(Exception):
+    pass
 
 
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
