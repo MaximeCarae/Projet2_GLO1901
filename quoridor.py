@@ -14,7 +14,7 @@ import networkx as nx
 
 class Quoridor:
     """
-    Classe Quoridor, contient toutes les fonctions nécéssaires pour 
+    Classe Quoridor, contient toutes les fonctions nécéssaires pour
     jouer au jeu Quoridor.
     """
     def __init__(self, joueurs, murs=None):
@@ -293,7 +293,7 @@ class Quoridor:
 
         if self.joueur2['pos'][1] == 1:
             return self.joueur2['nom']
-        
+
         if (self.joueur1['pos'][1] != 9 and self.joueur2['pos'][1] != 1):
             return False
 
@@ -359,7 +359,6 @@ class QuoridorError(Exception):
     """
     Gère les exceptions dans la class Quoridor
     """
-    pass
 
 
 def construire_graphe(joueurs, murs_horizontaux, murs_verticaux):
