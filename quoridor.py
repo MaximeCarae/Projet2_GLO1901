@@ -1,8 +1,22 @@
+""" Main du programme Jeu Quorridor - Phase 2
+Écrit par :
+Maxime Carpentier
+Vincent Bergeron
+Ousmane Touré
+Le 2 décembre 2019
+Ce programme contient la classe avec toutes
+les méthodes pour jouer au jeu Quoridor
+"""
+
+
 import networkx as nx
 
 
 class Quoridor:
-
+    """
+    Classe Quoridor, contient toutes les fonctions nécéssaires pour 
+    jouer au jeu Quoridor.
+    """
     def __init__(self, joueurs, murs=None):
         """
         Initialiser une partie de Quoridor avec les joueurs et les murs spécifiés,
@@ -84,8 +98,8 @@ class Quoridor:
 
         # On vérifie le nombre de murs en jeu, si invalide on soulève une erreur
         if ((murs is not None) and (len(self.verticaux) + len(self.horizontaux)
-                                + self.joueur1['murs']
-                                + self.joueur2['murs'] != 20)):
+                                    + self.joueur1['murs']
+                                    + self.joueur2['murs'] != 20)):
             raise QuoridorError
         elif ((murs is None) and (self.joueur1['murs']
                                   + self.joueur2['murs'] != 20)):
@@ -253,7 +267,7 @@ class Quoridor:
                                         'B1')):
             self.joueur1["pos"] = nx.shortest_path(graphe,
                                                    (self.joueur1["pos"][0],
-                                                     self.joueur1["pos"][1]),
+                                                    self.joueur1["pos"][1]),
                                                    'B1')[1]
 
         # Si on avait sélectionné le joueur 2, on le place à la meilleure
@@ -279,7 +293,8 @@ class Quoridor:
 
         if self.joueur2['pos'][1] == 1:
             return self.joueur2['nom']
-        else:
+        
+        if (self.joueur1['pos'][1] != 9 and self.joueur2['pos'][1] != 1):
             return False
 
     def placer_mur(self, joueur, position, orientation):
@@ -341,6 +356,9 @@ class Quoridor:
 
 
 class QuoridorError(Exception):
+    """
+    Gère les exceptions dans la class Quoridor
+    """
     pass
 
 
