@@ -127,11 +127,11 @@ class Quoridor:
 
         # On lit et on place le joueur 1
         chaine[37 + (16 - self.joueur1['pos'][1]*2+2)*40 +
-                4*(self.joueur1['pos'][0]-1)+6] = '1'
-    
+               4*(self.joueur1['pos'][0]-1)+6] = '1'
+
         # On lit et on place le joueur 2
         chaine[37 + (16 - self.joueur2['pos'][1]*2+2)*40 +
-                4*(self.joueur2['pos'][0]-1)+6] = '2'
+               4*(self.joueur2['pos'][0]-1)+6] = '2'
 
         # On retourne la chaine de caractère en ajoutant la légende et en
         # faisant un join() sur la liste. On sépare en trois fois pour ne pas
@@ -242,7 +242,7 @@ class Quoridor:
         # On créé le graphe pour pouvoir tester les positions possibles
         état = Quoridor.état_partie(self)
         graphe = construire_graphe(
-            [joueur['pos'] for joueur in état['joueurs']], 
+            [joueur['pos'] for joueur in état['joueurs']],
             état['murs']['horizontaux'],
             état['murs']['verticaux']
         )
@@ -251,17 +251,21 @@ class Quoridor:
         # position possible
         if (joueur == 1 and nx.has_path(graphe, (self.joueur1["pos"][0],
                                                  self.joueur1["pos"][1]),
-                                                 'B1')):
+                                        'B1')):
             self.joueur1["pos"] = nx.shortest_path(graphe,
-                (self.joueur1["pos"][0], self.joueur1["pos"][1]), 'B1')[1]
+                                                    (self.joueur1["pos"][0],
+                                                    self.joueur1["pos"][1]),
+                                                    'B1')[1]
 
         # Si on avait sélectionné le joueur 2, on le place à la meilleure
         # position possible
         if (joueur == 2 and nx.has_path(graphe, (self.joueur2["pos"][0],
-            self.joueur2["pos"][1]) , 'B2')):
+                                                 self.joueur2["pos"][1]),
+                                        'B2')):
             self.joueur2["pos"] = nx.shortest_path(graphe,
-                (self.joueur2["pos"][0], self.joueur2["pos"][1]), 'B2')[1]
-
+                                                    (self.joueur2["pos"][0],
+                                                    self.joueur2["pos"][1]),
+                                                    'B2')[1]
 
 
     def partie_terminée(self):
@@ -271,12 +275,12 @@ class Quoridor:
         """
         # On vérifie si le joueur 1 ou 2 sont à la dernière position,
         # si c'est le cas on retourne le nom du joueur. Sinon on retourne False
-        if self.joueur1['pos'][1] == 9 :
+        if self.joueur1['pos'][1] == 9:
             return self.joueur1['nom']
-        elif self.joueur2['pos'][1] == 1 :
+        elif self.joueur2['pos'][1] == 1:
             return self.joueur2['nom']
-        else :
-            return False 
+        else:
+            return False
 
     def placer_mur(self, joueur, position, orientation):
         """
@@ -296,22 +300,22 @@ class Quoridor:
         # On vérifie si l'orientation du murs est valide ou s'il y a déjà un
         # murs à cette position, sinon on soulève une erreur
         if ((orientation == "vertical" and position in self.verticaux) or
-            (orientation == "horizontal" and position in self.horizontaux)):
+                (orientation == "horizontal" and position in self.horizontaux)):
             raise QuoridorError
 
-        # On vérifie la position des murs verticaux, 
+        # On vérifie la position des murs verticaux,
         # si invalide on soulève une erreur
         if (orientation == 'vertical'):
-            if (not(2 <= position[0] <= 9) or
-                not(1 <= position[1] <= 8)):
+            if (not 2 <= position[0] <= 9 or
+                    not 1 <= position[1] <= 8):
                 raise QuoridorError
-        # On vérifie la position des murs horizontaux, 
+        # On vérifie la position des murs horizontaux,
         # si invalide on soulève une erreur
         if (orientation == 'horizontal'):
-            if (not(1 <= position[0] <= 8) or
-                not(2 <= position[1] <= 9)):
+            if (not 1 <= position[0] <= 8 or
+                    not 2 <= position[1] <= 9):
                 raise QuoridorError
-        
+
         # On vérifie si le joueur 1 et sélectionné et qu'il a
         # placé tous ses murs, on soulève une erreur
         if (joueur == 1 and not self.joueur1["murs"]):
@@ -321,14 +325,14 @@ class Quoridor:
         # placé tous ses murs, on soulève une erreur
         if (joueur == 2 and not self.joueur2["murs"]):
             raise QuoridorError
-        
+
         # On place le position du murs dans sa liste correspondante si aucune
         # des erreurs possiblent n'a été soulevées
         if orientation == "vertical":
             self.verticaux.append(position)
         if orientation == "horizontal":
             self.horizontaux.append(position)
-        
+
         # On incrémente le nombre de mur restant
         if joueur == 1:
             self.joueur1["murs"] += -1
